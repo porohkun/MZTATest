@@ -54,6 +54,7 @@ namespace MZTATest.Controls
 
     public class GripControlClickingWrapper
     {
+        public event Action MouseDown;
         public event Action<Vector2> BeginGrip;
         public event Action EndGrip;
         public event Action Click;
@@ -79,6 +80,7 @@ namespace MZTATest.Controls
 
         private void Grip_BeginGrip(GripControl sender)
         {
+            MouseDown?.Invoke();
             _clickWaiting = true;
             _startMousePos = Input.mousePosition;
         }

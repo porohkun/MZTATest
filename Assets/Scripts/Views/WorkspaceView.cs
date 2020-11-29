@@ -43,7 +43,19 @@ namespace MZTATest.Views
         {
             var view = _blocksViewFactory.Create(blockVM);
             view.transform.SetParent(transform);
+            view.MovingBegins += View_MovingBegins;
+            view.MovingEnds += View_MovingEnds;
             _blocks.Add(blockVM, view);
+        }
+
+        private void View_MovingBegins(Vector2 offset)
+        {
+            _viewModel.BeginMoveSelectedBlocks(Input.mousePosition.ToVector2XY() - offset);
+        }
+
+        private void View_MovingEnds()
+        {
+            _viewModel.EndMoveSelectedBlocks();
         }
 
         public void OnPointerDown(PointerEventData eventData)

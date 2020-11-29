@@ -21,9 +21,10 @@ namespace MZTATest.ViewModels
         public event Action<BlockViewModel> BlockRemoved;
 
         private Workspace _workspace;
+        private List<BlockViewModel> _blocks = new List<BlockViewModel>();
         private Vector2 _scrollStartMousePos;
         private Vector2 _scrollStartOffset;
-        private List<BlockViewModel> _blocks = new List<BlockViewModel>();
+
 
         public WorkspaceViewModel(WorkspaceKeeperService workspaceService, BlockViewModel.Factory blocksVMFactory)
         {
@@ -66,6 +67,19 @@ namespace MZTATest.ViewModels
         public void EndScroll()
         {
             IsScrolling = false;
+        }
+
+        public void BeginMoveSelectedBlocks(Vector2 position)
+        {
+            foreach (var block in _blocks.Where(b => b.Selected))
+                block.BeginGrip(true, true, true, true, position);
+
+        }
+
+        public void EndMoveSelectedBlocks()
+        {
+            foreach (var block in _blocks.Where(b => b.Selected))
+                block.EndGrip();
         }
 
     }

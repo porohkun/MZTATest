@@ -33,6 +33,9 @@ namespace MZTATest.Views
         [SerializeField]
         private GripControl[] _rightGrips;
 
+        public event Action<Vector2> MovingBegins;
+        public event Action MovingEnds;
+
         private BlockViewModel _viewModel;
         private RectTransform _rectTransform;
         private GripControlClickingWrapper _moveGripWrapper;
@@ -48,10 +51,16 @@ namespace MZTATest.Views
             }
 
             _moveGripWrapper = new GripControlClickingWrapper(_moveGrip, 5, 0.1f);
-            _moveGripWrapper.BeginGrip += (offset) => _viewModel.BeginGrip(true, true, true, true, Input.mousePosition.ToVector2XY() - offset);
-            _moveGripWrapper.EndGrip += () => _viewModel.EndGrip();
-            _moveGripWrapper.Click += () => _viewModel.Select(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftShift));
+            _moveGripWrapper.BeginGrip += (offset) =>
+            {
+                if (!_viewModel.Selected) _viewModel.Select(IsShift());
+                MovingBegins?.Invoke(offset);
+            };
+            _moveGripWrapper.EndGrip += () => MovingEnds?.Invoke();
+            _moveGripWrapper.Click += () => _viewModel.Select(IsShift());
         }
+
+        private bool IsShift() => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
         private void BeginGrip(GripControl sender)
         {
