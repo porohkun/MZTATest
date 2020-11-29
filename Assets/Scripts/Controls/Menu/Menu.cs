@@ -34,17 +34,8 @@ namespace MZTATest.Controls
         private void Update()
         {
             if (WantBeClosed == null)
-                if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !IsPointerOverUIObject(gameObject))
+                if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !gameObject.IsPointerOverUIObject())
                     CloseMenu();
-        }
-
-        private static bool IsPointerOverUIObject(GameObject gameObject)
-        {
-            var eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-            eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            var results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-            return results.Any(r => r.gameObject.transform.IsChildOf(gameObject.transform));
         }
 
         private static IEnumerable<GameObject> IterateGameObjectParents(GameObject gameObject)

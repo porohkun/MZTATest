@@ -70,5 +70,10 @@ namespace MZTATest.ViewModels
         {
             _blockSelectionService.AutoSelect(_block, shift);
         }
+
+        public void SetTitle(string text)
+        {
+            _block.Title = text;
+        }
     }
 }

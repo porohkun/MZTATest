@@ -18,12 +18,16 @@ namespace MZTATest.Views
         [SerializeField]
         private Text _titleText;
         [SerializeField]
+        private InputField _titleInputField;
+        [SerializeField]
+        private GripControl _titleGrip;
+        [SerializeField]
         private Image _backgroundImage;
         [SerializeField]
         private GameObject _selection;
 
         [SerializeField]
-        private GripControl _moveGrip;
+        private GripControl[] _moveGrips;
         [SerializeField]
         private GripControl[] _topGrips;
         [SerializeField]
@@ -38,11 +42,22 @@ namespace MZTATest.Views
 
         private BlockViewModel _viewModel;
         private RectTransform _rectTransform;
-        private GripControlClickingWrapper _moveGripWrapper;
+        private GripControlClickingWrapper[] _moveGripWrappers;
+        private GripControlClickingWrapper _titleGripWrapper;
+        private bool _titleEditingMode;
+
+        [Inject]
+        public void Construct(BlockViewModel viewModel)
+        {
+            _viewModel = viewModel;
+        }
 
         private void Awake()
         {
             _rectTransform = transform as RectTransform;
+
+            _titleGripWrapper = new GripControlClickingWrapper(_titleGrip, 20, 0.3f);
+            _titleGripWrapper.DoubleClick += BeginEditTitle;
 
             foreach (var grip in _topGrips.Union(_bottomGrips).Union(_leftGrips).Union(_rightGrips))
             {
@@ -50,14 +65,17 @@ namespace MZTATest.Views
                 grip.EndGrip += EndGrip;
             }
 
-            _moveGripWrapper = new GripControlClickingWrapper(_moveGrip, 5, 0.1f);
-            _moveGripWrapper.BeginGrip += (offset) =>
+            _moveGripWrappers = _moveGrips.Select(g => new GripControlClickingWrapper(g, 5, 0.3f)).ToArray();
+            foreach (var gripWrapper in _moveGripWrappers)
             {
-                if (!_viewModel.Selected) _viewModel.Select(IsShift());
-                MovingBegins?.Invoke(offset);
-            };
-            _moveGripWrapper.EndGrip += () => MovingEnds?.Invoke();
-            _moveGripWrapper.Click += () => _viewModel.Select(IsShift());
+                gripWrapper.BeginGrip += (offset) =>
+                {
+                    if (!_viewModel.Selected) _viewModel.Select(IsShift());
+                    MovingBegins?.Invoke(offset);
+                };
+                gripWrapper.EndGrip += () => MovingEnds?.Invoke();
+                gripWrapper.Click += () => _viewModel.Select(IsShift());
+            }
         }
 
         private bool IsShift() => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -77,15 +95,42 @@ namespace MZTATest.Views
             _viewModel.EndGrip();
         }
 
-        [Inject]
-        public void Construct(BlockViewModel viewModel)
+        private void BeginEditTitle()
         {
-            _viewModel = viewModel;
+            {//HACK: снимает выделение со всех блоков чтобы del во время редактирования заголовка не удалял блоки.
+                _viewModel.Select(false);
+                if (_viewModel.Selected)
+                    _viewModel.Select(false);
+            }
+
+            _titleEditingMode = true;
+            _titleInputField.text = _viewModel.Title;
+            _titleInputField.gameObject.SetActive(true);
+            _titleInputField.Select();
+            _titleInputField.ActivateInputField();
+        }
+
+        private void EndEditTitle(bool apply)
+        {
+            _titleEditingMode = false;
+            if (apply)
+                _viewModel.SetTitle(_titleInputField.text);
+            _titleInputField.gameObject.SetActive(false);
         }
 
         private void Update()
         {
-            _moveGripWrapper.Update();
+            foreach (var gripWrapper in _moveGripWrappers)
+                gripWrapper.Update();
+
+            if (_titleEditingMode)
+            {
+                if ((Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter)) ||
+                    ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !_titleInputField.gameObject.IsPointerOverUIObject()))
+                    EndEditTitle(true);
+                else if (Input.GetKeyUp(KeyCode.Escape))
+                    EndEditTitle(false);
+            }
 
             if (_selection.activeSelf != _viewModel.Selected)
                 _selection.SetActive(_viewModel.Selected);

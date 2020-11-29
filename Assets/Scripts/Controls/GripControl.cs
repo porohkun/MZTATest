@@ -91,11 +91,12 @@ namespace MZTATest.Controls
                 EndGrip?.Invoke();
             else
             {
-                Click?.Invoke();
                 _clickWaiting = false;
                 var clickTime = Time.unscaledTime;
                 if (clickTime - _lastClickTime < _doubleClickTime)
                     DoubleClick?.Invoke();
+                else
+                    Click?.Invoke();
                 _lastClickTime = clickTime;
             }
         }
