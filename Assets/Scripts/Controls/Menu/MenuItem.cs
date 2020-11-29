@@ -17,7 +17,6 @@ namespace MZTATest.Controls
     public class MenuItem : Selectable, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         public delegate void ClickedHandler(MenuItem sender);
-        public delegate void PropertyChangedHandler<T>(MenuItem sender, T oldValue, T newValue);
 
         public enum State
         {
@@ -35,7 +34,7 @@ namespace MZTATest.Controls
 
         public event ClickedHandler Clicked;
 
-        public event PropertyChangedHandler<bool> IsPointerInsideChanged;
+        public event PropertyChangedHandler<MenuItem, bool> IsPointerInsideChanged;
         private bool _isPointerInside;
         public bool IsPointerInside
         {

@@ -34,7 +34,7 @@ namespace MZTATest.Controls
         private void Update()
         {
             if (WantBeClosed == null)
-                if (Input.GetMouseButtonUp(0) && !IsPointerOverUIObject(gameObject))
+                if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !IsPointerOverUIObject(gameObject))
                     CloseMenu();
         }
 
