@@ -26,7 +26,7 @@ namespace MZTATest.Commands
 
         public override bool CanExecute()
         {
-            return true;
+            return _workspaceKeeperService.GetWorkspace().Edited;
         }
 
         public override void Execute()

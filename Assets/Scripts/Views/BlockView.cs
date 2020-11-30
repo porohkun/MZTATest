@@ -80,6 +80,8 @@ namespace MZTATest.Views
             }
 
             _colorButton.onClick.AddListener(() => _viewModel.ChangeColor());
+
+            ShowViewModel();
         }
 
         private bool IsShift() => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -124,9 +126,6 @@ namespace MZTATest.Views
 
         private void Update()
         {
-            if (_viewModel.Dirty)
-                Destroy(gameObject);
-
             foreach (var gripWrapper in _moveGripWrappers)
                 gripWrapper.Update();
 
@@ -139,15 +138,20 @@ namespace MZTATest.Views
                     EndEditTitle(false);
             }
 
+            ShowViewModel();
+
+            if (_viewModel.IsGripping)
+                _viewModel.ContinueGrip(Input.mousePosition.ToVector2XY());
+        }
+
+        private void ShowViewModel()
+        {
             if (_selection.activeSelf != _viewModel.Selected)
                 _selection.SetActive(_viewModel.Selected);
             _titleText.text = _viewModel.Title;
             _backgroundImage.color = _viewModel.Color;
             _rectTransform.sizeDelta = _viewModel.Size.Round();
             _rectTransform.anchoredPosition = _viewModel.Position.Round();
-
-            if (_viewModel.IsGripping)
-                _viewModel.ContinueGrip(Input.mousePosition.ToVector2XY());
         }
     }
 }

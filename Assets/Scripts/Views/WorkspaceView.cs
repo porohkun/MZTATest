@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using Zenject;
 using System.Collections.Generic;
 using MZTATest.Commands;
+using MZTATest.Services;
 
 namespace MZTATest.Views
 {
@@ -18,16 +19,22 @@ namespace MZTATest.Views
         [SerializeField]
         private MonoBehaviourCommand _deleteSelectedBlocksCommand;
 
+        private RectTransform rectTransform;
+
         private WorkspaceViewModel _viewModel;
         private BlockView.Factory _blocksViewFactory;
+        private WorkspaceScrollService _workspaceScrollService;
 
         private Dictionary<BlockViewModel, BlockView> _blocks = new Dictionary<BlockViewModel, BlockView>();
 
         [Inject]
-        public void Construct(WorkspaceViewModel viewModel, BlockView.Factory blocksViewFactory)
+        public void Construct(WorkspaceViewModel viewModel, BlockView.Factory blocksViewFactory, WorkspaceScrollService workspaceScrollService)
         {
+            rectTransform = transform as RectTransform;
+
             _viewModel = viewModel;
             _blocksViewFactory = blocksViewFactory;
+            _workspaceScrollService = workspaceScrollService;
             _viewModel.BlockAdded += _viewModel_BlockAdded;
             _viewModel.BlockRemoved += _viewModel_BlockRemoved;
             _viewModel.UpdateWorkspace();
@@ -84,6 +91,9 @@ namespace MZTATest.Views
 
             _grid.Offset = _viewModel.Offset.Round();
             _offsetText.text = _viewModel.Offset.Round().ToString();
+
+            _workspaceScrollService.Offset = _viewModel.Offset.Round();
+            _workspaceScrollService.WindowSize = rectTransform.sizeDelta;
 
             if ((Input.GetKeyUp(KeyCode.Delete) || Input.GetKeyUp(KeyCode.Backspace)) && (_deleteSelectedBlocksCommand?.CanExecute() ?? false))
                 _deleteSelectedBlocksCommand.Execute();

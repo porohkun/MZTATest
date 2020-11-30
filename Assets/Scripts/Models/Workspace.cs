@@ -26,30 +26,7 @@ namespace MZTATest.Models
 
         public Workspace()
         {
-            AddBlock(new Block()
-            {
-                Title = "TestBlock",
-                Color = Color.red,
-                Position = new Vector2(200, 200)
-            });
-            AddBlock(new Block()
-            {
-                Title = "TestBlock2",
-                Color = Color.green,
-                Position = new Vector2(500, 200)
-            });
-            AddBlock(new Block()
-            {
-                Title = "TestBlock3",
-                Color = Color.cyan,
-                Position = new Vector2(800, 200)
-            });
-            AddBlock(new Block()
-            {
-                Title = "TestBlock4",
-                Color = Color.yellow,
-                Position = new Vector2(500, 500)
-            });
+
         }
 
         public void AddBlock(Block block)

@@ -40,8 +40,18 @@ namespace MZTATest.ViewModels
                 foreach (var block in _workspace.Blocks)
                     _workspace_BlockRemoved(block);
             _workspace = _workspaceService.GetWorkspace();
+            _workspace.BlockAdded += _workspace_BlockAdded;
             _workspace.BlockRemoved += _workspace_BlockRemoved;
-            LocateBlocks();
+            foreach (var block in _workspace.Blocks)
+                _workspace_BlockAdded(block);
+        }
+
+        private void _workspace_BlockAdded(Block block)
+        {
+            var blockVM = _blocksVMFactory.Create(block);
+            blockVM.Offset = Offset;
+            _blocks.Add(blockVM);
+            BlockAdded?.Invoke(blockVM);
         }
 
         private void _workspace_BlockRemoved(Block block)
@@ -49,19 +59,9 @@ namespace MZTATest.ViewModels
             var blockVM = _blocks.Find(b => b.IsBlock(block));
             if (blockVM != null)
             {
-                blockVM.SetDirty();
+                BlockRemoved?.Invoke(blockVM);
                 _blocks.Remove(blockVM);
             }
-        }
-
-        private void LocateBlocks()
-        {
-            foreach (var block in _blocks)
-                BlockRemoved?.Invoke(block);
-            _blocks.Clear();
-            _blocks.AddRange(_workspace.Blocks.Select(b => _blocksVMFactory.Create(b)));
-            foreach (var block in _blocks)
-                BlockAdded?.Invoke(block);
         }
 
         public void BeginScroll(Vector2 position)

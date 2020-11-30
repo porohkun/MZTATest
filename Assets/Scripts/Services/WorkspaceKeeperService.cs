@@ -1,9 +1,5 @@
 ﻿using MZTATest.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MZTATest.Services
 {
@@ -23,6 +19,12 @@ namespace MZTATest.Services
         public void CreateWorkspace()
         {
             _currentWorkspace = new Workspace();
+            CurrentWorkspaceChanged?.Invoke();
+        }
+
+        public void SetWorkspace(Workspace workspace)
+        {
+            _currentWorkspace = workspace;
             CurrentWorkspaceChanged?.Invoke();
         }
     }

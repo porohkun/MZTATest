@@ -18,6 +18,7 @@ namespace MZTATest
         {
             Container.Bind<WorkspaceKeeperService>().AsSingle();
             Container.Bind<BlocksSelectionService>().AsSingle();
+            Container.Bind<WorkspaceScrollService>().AsSingle();
             Container.Bind<ISerializationService>().To<JsonSezializationService>().AsSingle();
             Container.Bind<WorkspaceViewModel>().AsTransient();
             Container.BindFactory<Block, BlockViewModel, BlockViewModel.Factory>().AsTransient();

@@ -41,13 +41,13 @@ namespace MZTATest.Models
         public Vector2 Position
         {
             get => _position;
-            set => SetProperty(ref _position, value);
+            set => SetProperty(ref _position, value.Round());
         }
         [JsonIgnore]
         public Vector2 Size
         {
             get => _size;
-            set => SetProperty(ref _size, value);
+            set => SetProperty(ref _size, value.Round());
         }
 
         private void SetProperty<T>(ref T container, T value)

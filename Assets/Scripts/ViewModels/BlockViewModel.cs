@@ -20,7 +20,6 @@ namespace MZTATest.ViewModels
         public Vector2 Size => _block.Size;
         public bool IsGripping => _gripTop || _gripBottom || _gripLeft || _gripRight;
         public bool Selected => _blockSelectionService.IsBlockSelected(_block);
-        public bool Dirty { get; private set; }
 
         public Vector2 Offset { get; set; }
 
@@ -46,11 +45,6 @@ namespace MZTATest.ViewModels
         public bool IsBlock(Block block)
         {
             return _block == block;
-        }
-
-        public void SetDirty()
-        {
-            Dirty = true;
         }
 
         public void BeginGrip(bool top, bool bottom, bool left, bool right, Vector2 position)

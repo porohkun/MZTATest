@@ -1,4 +1,5 @@
-﻿using MZTATest.Services;
+﻿using MZTATest.Models;
+using MZTATest.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using Zenject;
 
 namespace MZTATest.Commands
 {
-    public class NewWorkspaceCommand : MonoBehaviourCommand
+    public class OpenWorkspaceCommand : MonoBehaviourCommand
     {
         private WorkspaceKeeperService _workspaceKeeperService;
         private MessageBoxService _messageBoxService;
@@ -33,20 +34,27 @@ namespace MZTATest.Commands
         {
             var ws = _workspaceKeeperService.GetWorkspace();
             if (ws.Edited)
-                _messageBoxService.ShowYesNoCancelMessageBox("Внимание!", "Текущий файл не сохранен. Сохранить его перед тем, как создать новый?", SaveAndCreate, Create);
+                _messageBoxService.ShowYesNoCancelMessageBox("Внимание!", "Текущий файл не сохранен. Сохранить его перед тем, как открыть другой?", SaveAndOpen, Open);
             else
-                Create();
+                Open();
         }
 
-        private void SaveAndCreate()
+        private void SaveAndOpen()
         {
             if (Save())
-                Create();
+                Open();
         }
 
-        private void Create()
+        private void Open()
         {
-            _workspaceKeeperService.CreateWorkspace();
+            _saveLoadService.OpenFile(FileOpened);
+        }
+
+        private void FileOpened(string data)
+        {
+            var ws = _serializationService.Deserialize<Workspace>(data);
+
+            _workspaceKeeperService.SetWorkspace(ws);
         }
 
         private bool Save()

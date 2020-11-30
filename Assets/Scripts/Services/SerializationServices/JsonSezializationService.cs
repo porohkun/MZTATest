@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MZTATest.Services
 {
@@ -14,7 +10,10 @@ namespace MZTATest.Services
 
         public T Deserialize<T>(string data)
         {
-            throw new NotImplementedException();
+            using (var reader = new JsonTextReader(new StringReader(data)))
+            {
+                return GetSerializer().Deserialize<T>(reader);
+            }
         }
 
         public string Serialize(object data)
