@@ -36,6 +36,9 @@ namespace MZTATest.ViewModels
 
         public void UpdateWorkspace()
         {
+            if (_workspace != null)
+                foreach (var block in _workspace.Blocks)
+                    _workspace_BlockRemoved(block);
             _workspace = _workspaceService.GetWorkspace();
             _workspace.BlockRemoved += _workspace_BlockRemoved;
             LocateBlocks();

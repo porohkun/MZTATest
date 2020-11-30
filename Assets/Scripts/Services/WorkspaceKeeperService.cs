@@ -20,7 +20,7 @@ namespace MZTATest.Services
             return _currentWorkspace;
         }
 
-        private void CreateWorkspace()
+        public void CreateWorkspace()
         {
             _currentWorkspace = new Workspace();
             CurrentWorkspaceChanged?.Invoke();
