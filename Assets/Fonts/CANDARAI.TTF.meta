@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: de265c3ac9557a041a3eb6fe649ad76b
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Candara
+  fontNames:
+  - Candara
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b07ea2e0099ea3f42a6afde4ed1f6a47, type: 3}
+  - {fileID: 12800000, guid: a6da8bf5f98da4045852c9680c10b55a, type: 3}
+  - {fileID: 12800000, guid: a3a7c988dd7e7de458990dda7103e8aa, type: 3}
+  - {fileID: 12800000, guid: f7dd750d186291742bab05e8826587e5, type: 3}
+  - {fileID: 12800000, guid: c8ab581d0cbad75439032b5d673e2673, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
