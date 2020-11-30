@@ -7,16 +7,16 @@ using UnityEngine;
 
 namespace MZTATest.Commands
 {
-    public class AppCloseCommand : MonoBehaviour, ICommand
+    public class AppCloseCommand : MonoBehaviourCommand
     {
-        public bool CanExecute()
+        public override bool CanExecute()
         {
             if (Application.isEditor)
                 return false;
             return true;
         }
 
-        public void Execute()
+        public override void Execute()
         {
             Application.Quit();
         }

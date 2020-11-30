@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Zenject;
 using System.Collections.Generic;
+using MZTATest.Commands;
 
 namespace MZTATest.Views
 {
@@ -14,6 +15,8 @@ namespace MZTATest.Views
         private GridController _grid;
         [SerializeField]
         private Text _offsetText;
+        [SerializeField]
+        private MonoBehaviourCommand _deleteSelectedBlocksCommand;
 
         private WorkspaceViewModel _viewModel;
         private BlockView.Factory _blocksViewFactory;
@@ -81,6 +84,9 @@ namespace MZTATest.Views
 
             _grid.Offset = _viewModel.Offset.Round();
             _offsetText.text = _viewModel.Offset.Round().ToString();
+
+            if ((Input.GetKeyUp(KeyCode.Delete) || Input.GetKeyUp(KeyCode.Backspace)) && (_deleteSelectedBlocksCommand?.CanExecute() ?? false))
+                _deleteSelectedBlocksCommand.Execute();
         }
     }
 }

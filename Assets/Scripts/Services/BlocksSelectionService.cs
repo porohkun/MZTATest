@@ -9,6 +9,8 @@ namespace MZTATest.Services
 {
     public class BlocksSelectionService
     {
+        public IEnumerable<Block> SelectedBlocks => _selectedBlocks;
+
         private List<Block> _selectedBlocks = new List<Block>();
 
         public bool IsBlockSelected(Block block)
@@ -34,6 +36,16 @@ namespace MZTATest.Services
                 if (!selected)
                     _selectedBlocks.Add(block);
             }
+        }
+
+        public void Deselect(Block block)
+        {
+            _selectedBlocks.Remove(block);
+        }
+
+        public bool IsAnyBlockSelected()
+        {
+            return _selectedBlocks.Count > 0;
         }
 
         public void Select(Block block, bool shift)

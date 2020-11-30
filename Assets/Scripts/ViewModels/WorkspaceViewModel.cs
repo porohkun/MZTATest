@@ -37,7 +37,18 @@ namespace MZTATest.ViewModels
         public void UpdateWorkspace()
         {
             _workspace = _workspaceService.GetWorkspace();
+            _workspace.BlockRemoved += _workspace_BlockRemoved;
             LocateBlocks();
+        }
+
+        private void _workspace_BlockRemoved(Block block)
+        {
+            var blockVM = _blocks.Find(b => b.IsBlock(block));
+            if (blockVM != null)
+            {
+                blockVM.SetDirty();
+                _blocks.Remove(blockVM);
+            }
         }
 
         private void LocateBlocks()
@@ -81,6 +92,5 @@ namespace MZTATest.ViewModels
             foreach (var block in _blocks.Where(b => b.Selected))
                 block.EndGrip();
         }
-
     }
 }

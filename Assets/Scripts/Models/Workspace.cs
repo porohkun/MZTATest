@@ -10,6 +10,7 @@ namespace MZTATest.Models
     public class Workspace
     {
         public IEnumerable<Block> Blocks => _blocks;
+        public event Action<Block> BlockRemoved;
 
         private List<Block> _blocks = new List<Block>();
 
@@ -39,6 +40,12 @@ namespace MZTATest.Models
                 Color = Color.yellow,
                 Position = new Vector2(500, 500)
             });
+        }
+
+        public void RemoveBlock(Block block)
+        {
+            if (_blocks.Remove(block))
+                BlockRemoved?.Invoke(block);
         }
     }
 }

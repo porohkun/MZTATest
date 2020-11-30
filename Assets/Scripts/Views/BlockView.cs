@@ -124,6 +124,9 @@ namespace MZTATest.Views
 
         private void Update()
         {
+            if (_viewModel.Dirty)
+                Destroy(gameObject);
+
             foreach (var gripWrapper in _moveGripWrappers)
                 gripWrapper.Update();
 

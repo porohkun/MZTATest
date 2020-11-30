@@ -62,7 +62,7 @@ namespace MZTATest.Controls
 
         private void Update()
         {
-            if (_command != null)
+            if (Application.isPlaying && _command != null)
                 interactable = _command.CanExecute();
         }
 
