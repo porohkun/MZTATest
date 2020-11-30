@@ -50,6 +50,12 @@ namespace MZTATest.Controls
         {
             _cursorService.DropCursor(this);
         }
+
+        private void OnDestroy()
+        {
+            _cursorService.DropCursor(this, false);
+            _cursorService.DropCursor(this, true);
+        }
     }
 
     public class GripControlClickingWrapper

@@ -29,6 +29,13 @@ namespace MZTATest.Models
 
         }
 
+        [JsonConstructor]
+        public Workspace(List<Block> blocks)
+        {
+            foreach (var block in blocks)
+                AddBlock(block);
+        }
+
         public void AddBlock(Block block)
         {
             if (!_blocks.Contains(block))
@@ -37,12 +44,14 @@ namespace MZTATest.Models
                 block.Edited += () => Edited = true;
                 BlockAdded?.Invoke(block);
             }
+            Edited = true;
         }
 
         public void RemoveBlock(Block block)
         {
             if (_blocks.Remove(block))
                 BlockRemoved?.Invoke(block);
+            Edited = true;
         }
     }
 }

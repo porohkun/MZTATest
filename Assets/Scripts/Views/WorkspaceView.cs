@@ -37,7 +37,6 @@ namespace MZTATest.Views
             _workspaceScrollService = workspaceScrollService;
             _viewModel.BlockAdded += _viewModel_BlockAdded;
             _viewModel.BlockRemoved += _viewModel_BlockRemoved;
-            _viewModel.UpdateWorkspace();
         }
 
         private void _viewModel_BlockRemoved(BlockViewModel blockVM)
