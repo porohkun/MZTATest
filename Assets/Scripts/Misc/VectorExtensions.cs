@@ -17,5 +17,10 @@ namespace UnityEngine
         {
             return new Vector2(Mathf.Round(vector.x), Mathf.Round(vector.y));
         }
+
+        public static Vector2 Ceil(this Vector2 vector)
+        {
+            return new Vector2(Mathf.Ceil(vector.x), Mathf.Ceil(vector.y));
+        }
     }
 }

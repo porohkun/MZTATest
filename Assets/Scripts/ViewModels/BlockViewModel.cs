@@ -25,6 +25,7 @@ namespace MZTATest.ViewModels
 
         private Block _block;
         private BlocksSelectionService _blockSelectionService;
+        private ColorPickerService _colorPickerService;
 
         private bool _gripTop;
         private bool _gripBottom;
@@ -34,10 +35,11 @@ namespace MZTATest.ViewModels
         private Vector2 _gripStartBlockPos;
         private Vector2 _gripStartBlockSize;
 
-        public BlockViewModel(Block block, BlocksSelectionService blockSelectionService)
+        public BlockViewModel(Block block, BlocksSelectionService blockSelectionService, ColorPickerService colorPickerService)
         {
             _block = block;
             _blockSelectionService = blockSelectionService;
+            _colorPickerService = colorPickerService;
         }
 
         public void BeginGrip(bool top, bool bottom, bool left, bool right, Vector2 position)
@@ -74,6 +76,11 @@ namespace MZTATest.ViewModels
         public void SetTitle(string text)
         {
             _block.Title = text;
+        }
+
+        public void ChangeColor()
+        {
+            _colorPickerService.ShowColorPicker((c) => _block.Color = c);
         }
     }
 }

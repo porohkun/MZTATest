@@ -25,6 +25,8 @@ namespace MZTATest.Views
         private Image _backgroundImage;
         [SerializeField]
         private GameObject _selection;
+        [SerializeField]
+        private Button _colorButton;
 
         [SerializeField]
         private GripControl[] _moveGrips;
@@ -76,6 +78,8 @@ namespace MZTATest.Views
                 gripWrapper.EndGrip += () => MovingEnds?.Invoke();
                 gripWrapper.Click += () => _viewModel.Select(IsShift());
             }
+
+            _colorButton.onClick.AddListener(() => _viewModel.ChangeColor());
         }
 
         private bool IsShift() => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);

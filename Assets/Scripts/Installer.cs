@@ -22,6 +22,7 @@ namespace MZTATest
             Container.BindFactory<Block, BlockViewModel, BlockViewModel.Factory>().AsTransient();
             Container.BindFactory<BlockViewModel, BlockView, BlockView.Factory>().FromComponentInNewPrefabResource("Views/BlockView");
             Container.Bind<CursorService>().FromComponentInNewPrefabResource("Services/CursorService").AsSingle();
+            Container.Bind<ColorPickerService>().FromComponentInNewPrefabResource("Services/ColorPickerService").AsSingle();
         }
     }
 }
